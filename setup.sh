@@ -58,7 +58,8 @@ main() {
     compile_gui
 
     # Ejecutar GUI con el directorio del script como variable de entorno
-    MACPREPARE_DIR="$SCRIPT_DIR" "$GUI_BINARY"
+    # Pasar DEBUG si está definido
+    MACPREPARE_DIR="$SCRIPT_DIR" DEBUG="$DEBUG" "$GUI_BINARY"
 
     echo ""
     echo -e "${GREEN}✓${RESET} MacPrepare finalizado"
