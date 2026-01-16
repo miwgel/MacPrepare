@@ -266,84 +266,7 @@ class AppState: ObservableObject {
             debugLog("  [\(index + 1)] \(item.label) → \(item.script)")
         }
 
-        // Check if any system scripts need sudo
-        let needsSudo = installItems.contains { $0.script.contains("modules/system/") }
-
-        if needsSudo && !dryRun {
-            debugLog("🔐 System scripts detected, requesting sudo...")
-            requestSudoAndRun()
-        } else {
-            runNextItem()
-        }
-    }
-
-    func requestSudoAndRun() {
-        DispatchQueue.global(qos: .userInitiated).async {
-            // Get password via osascript dialog
-            let getPassword = Process()
-            getPassword.executableURL = URL(fileURLWithPath: "/usr/bin/osascript")
-            getPassword.arguments = ["-e", """
-                display dialog "MacPrepare necesita permisos de administrador para configurar el sistema." default answer "" with hidden answer with title "Contraseña" with icon caution
-                text returned of result
-            """]
-
-            let passwordPipe = Pipe()
-            getPassword.standardOutput = passwordPipe
-            getPassword.standardError = FileHandle.nullDevice
-
-            do {
-                try getPassword.run()
-                getPassword.waitUntilExit()
-
-                guard getPassword.terminationStatus == 0 else {
-                    DispatchQueue.main.async {
-                        debugLog("❌ Sudo authentication cancelled")
-                        self.isInstalling = false
-                    }
-                    return
-                }
-
-                let passwordData = passwordPipe.fileHandleForReading.readDataToEndOfFile()
-                guard let password = String(data: passwordData, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines),
-                      !password.isEmpty else {
-                    DispatchQueue.main.async {
-                        debugLog("❌ No password provided")
-                        self.isInstalling = false
-                    }
-                    return
-                }
-
-                // Authenticate sudo with the password
-                let sudo = Process()
-                sudo.executableURL = URL(fileURLWithPath: "/usr/bin/sudo")
-                sudo.arguments = ["-S", "-v"]
-
-                let sudoInput = Pipe()
-                sudo.standardInput = sudoInput
-                sudo.standardOutput = FileHandle.nullDevice
-                sudo.standardError = FileHandle.nullDevice
-
-                try sudo.run()
-                sudoInput.fileHandleForWriting.write((password + "\n").data(using: .utf8)!)
-                sudoInput.fileHandleForWriting.closeFile()
-                sudo.waitUntilExit()
-
-                DispatchQueue.main.async {
-                    if sudo.terminationStatus == 0 {
-                        debugLog("🔐 Sudo authenticated successfully")
-                        self.runNextItem()
-                    } else {
-                        debugLog("❌ Sudo authentication failed (wrong password?)")
-                        self.isInstalling = false
-                    }
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    debugLog("❌ Failed to request sudo: \(error)")
-                    self.isInstalling = false
-                }
-            }
-        }
+        runNextItem()
     }
 
     func runNextItem() {
@@ -402,20 +325,71 @@ class AppState: ObservableObject {
             return false
         }
 
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/bin/zsh")
+        // Check if script needs admin privileges (system scripts with sudo)
+        let needsAdmin = scriptPath.contains("modules/system/")
 
         let utilsPath = "\(scriptDir)/lib/utils.sh"
-        let command = arg.isEmpty
+        let shellCommand = arg.isEmpty
             ? "source '\(utilsPath)' 2>/dev/null; source '\(fullPath)'"
             : "source '\(utilsPath)' 2>/dev/null; source '\(fullPath)' '\(arg)'"
 
-        debugLog("🚀 Command: \(command)")
+        if needsAdmin {
+            debugLog("🔐 Running with administrator privileges")
+            return executeWithAdmin(command: shellCommand, scriptDir: scriptDir)
+        } else {
+            debugLog("🚀 Running normally")
+            return executeNormally(command: shellCommand, scriptDir: scriptDir)
+        }
+    }
 
+    func executeWithAdmin(command: String, scriptDir: String) -> Bool {
+        // Use osascript with administrator privileges (shows native macOS auth dialog)
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: "/usr/bin/osascript")
+
+        // Escape single quotes in command for AppleScript
+        let escapedCommand = command.replacingOccurrences(of: "'", with: "'\\''")
+        let appleScript = """
+            do shell script "cd '\(scriptDir)' && export PATH='/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin' && \(escapedCommand)" with administrator privileges
+        """
+
+        process.arguments = ["-e", appleScript]
+
+        let stdoutPipe = Pipe()
+        let stderrPipe = Pipe()
+        process.standardOutput = stdoutPipe
+        process.standardError = stderrPipe
+
+        do {
+            try process.run()
+            process.waitUntilExit()
+
+            let stdoutData = stdoutPipe.fileHandleForReading.readDataToEndOfFile()
+            let stderrData = stderrPipe.fileHandleForReading.readDataToEndOfFile()
+
+            if let stdout = String(data: stdoutData, encoding: .utf8), !stdout.isEmpty {
+                debugLog("📤 STDOUT:\n\(stdout)")
+            }
+            if let stderr = String(data: stderrData, encoding: .utf8), !stderr.isEmpty {
+                debugLog("⚠️ STDERR:\n\(stderr)")
+            }
+
+            let success = process.terminationStatus == 0
+            debugLog(success ? "✅ Exit code: 0 (success)" : "❌ Exit code: \(process.terminationStatus) (error)")
+
+            return success
+        } catch {
+            debugLog("❌ ERROR: Failed to run process: \(error.localizedDescription)")
+            return false
+        }
+    }
+
+    func executeNormally(command: String, scriptDir: String) -> Bool {
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: "/bin/zsh")
         process.arguments = ["-c", command]
         process.currentDirectoryURL = URL(fileURLWithPath: scriptDir)
 
-        // Set environment
         var env = ProcessInfo.processInfo.environment
         env["PATH"] = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
         process.environment = env
