@@ -343,17 +343,29 @@ class AppState: ObservableObject {
     }
 
     func executeWithAdmin(command: String, scriptDir: String) -> Bool {
+        // Write command to temp script file to avoid escaping issues
+        let tempScript = "/tmp/macprepare-admin-\(UUID().uuidString).sh"
+        let scriptContent = """
+        #!/bin/bash
+        cd '\(scriptDir)'
+        export PATH='/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin'
+        \(command)
+        """
+
+        do {
+            try scriptContent.write(toFile: tempScript, atomically: true, encoding: .utf8)
+            try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: tempScript)
+        } catch {
+            debugLog("❌ ERROR: Failed to create temp script: \(error)")
+            return false
+        }
+
+        defer { try? FileManager.default.removeItem(atPath: tempScript) }
+
         // Use osascript with administrator privileges (shows native macOS auth dialog)
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/usr/bin/osascript")
-
-        // Escape single quotes in command for AppleScript
-        let escapedCommand = command.replacingOccurrences(of: "'", with: "'\\''")
-        let appleScript = """
-            do shell script "cd '\(scriptDir)' && export PATH='/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin' && \(escapedCommand)" with administrator privileges
-        """
-
-        process.arguments = ["-e", appleScript]
+        process.arguments = ["-e", "do shell script \"\(tempScript)\" with administrator privileges"]
 
         let stdoutPipe = Pipe()
         let stderrPipe = Pipe()
