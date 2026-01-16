@@ -1,0 +1,8 @@
+# Binario compilado
+.build/
+
+# Logs
+*.log
+
+# macOS
+.DS_Store
