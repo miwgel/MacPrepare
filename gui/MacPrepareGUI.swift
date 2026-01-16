@@ -266,44 +266,7 @@ class AppState: ObservableObject {
             debugLog("  [\(index + 1)] \(item.label) → \(item.script)")
         }
 
-        // Check if any system scripts need sudo
-        let needsSudo = installItems.contains { $0.script.contains("modules/system/") }
-
-        if needsSudo && !dryRun {
-            debugLog("🔐 System scripts detected, requesting sudo...")
-            requestSudoAndRun()
-        } else {
-            runNextItem()
-        }
-    }
-
-    func requestSudoAndRun() {
-        DispatchQueue.global(qos: .userInitiated).async {
-            // Use osascript to show native password dialog and validate sudo
-            let process = Process()
-            process.executableURL = URL(fileURLWithPath: "/usr/bin/osascript")
-            process.arguments = ["-e", "do shell script \"sudo -v\" with administrator privileges"]
-
-            do {
-                try process.run()
-                process.waitUntilExit()
-
-                DispatchQueue.main.async {
-                    if process.terminationStatus == 0 {
-                        debugLog("🔐 Sudo authenticated successfully")
-                        self.runNextItem()
-                    } else {
-                        debugLog("❌ Sudo authentication cancelled")
-                        self.isInstalling = false
-                    }
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    debugLog("❌ Failed to request sudo: \(error)")
-                    self.isInstalling = false
-                }
-            }
-        }
+        runNextItem()
     }
 
     func runNextItem() {
@@ -365,6 +328,29 @@ class AppState: ObservableObject {
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/bin/zsh")
 
+        // Create temp directory for sudo wrapper
+        let wrapperDir = "/tmp/macprepare-bin"
+        try? FileManager.default.createDirectory(atPath: wrapperDir, withIntermediateDirectories: true)
+
+        // Create askpass helper for sudo (shows native password dialog)
+        let askpassPath = "\(wrapperDir)/askpass"
+        let askpassScript = """
+        #!/bin/bash
+        osascript -e 'display dialog "MacPrepare necesita permisos de administrador" default answer "" with hidden answer with title "Contraseña"' -e 'text returned of result' 2>/dev/null
+        """
+        try? askpassScript.write(toFile: askpassPath, atomically: true, encoding: .utf8)
+        try? FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: askpassPath)
+
+        // Create sudo wrapper that uses askpass (named "sudo" to intercept calls)
+        let sudoWrapper = "\(wrapperDir)/sudo"
+        let sudoScript = """
+        #!/bin/bash
+        export SUDO_ASKPASS="\(askpassPath)"
+        /usr/bin/sudo -A "$@"
+        """
+        try? sudoScript.write(toFile: sudoWrapper, atomically: true, encoding: .utf8)
+        try? FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: sudoWrapper)
+
         let utilsPath = "\(scriptDir)/lib/utils.sh"
         let command = arg.isEmpty
             ? "source '\(utilsPath)' 2>/dev/null; source '\(fullPath)'"
@@ -375,9 +361,10 @@ class AppState: ObservableObject {
         process.arguments = ["-c", command]
         process.currentDirectoryURL = URL(fileURLWithPath: scriptDir)
 
-        // Set environment
+        // Set environment with sudo wrapper first in PATH
         var env = ProcessInfo.processInfo.environment
-        env["PATH"] = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+        env["PATH"] = "\(wrapperDir):/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+        env["SUDO_ASKPASS"] = askpassPath
         process.environment = env
 
         let stdoutPipe = Pipe()
