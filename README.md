@@ -6,6 +6,8 @@ Configura tu Mac en un solo comando.
 zsh <(curl -fsSL https://raw.githubusercontent.com/miwgel/MacPrepare/main/install.sh)
 ```
 
+![MacPrepare UI](ui.png)
+
 ## Qué hace
 
 Abre una interfaz gráfica nativa donde puedes seleccionar:
