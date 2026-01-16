@@ -6,3 +6,6 @@
 
 # macOS
 .DS_Store
+
+# Claude Code local config
+CLAUDE.local.md
