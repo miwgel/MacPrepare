@@ -266,7 +266,44 @@ class AppState: ObservableObject {
             debugLog("  [\(index + 1)] \(item.label) → \(item.script)")
         }
 
-        runNextItem()
+        // Check if any system scripts need sudo
+        let needsSudo = installItems.contains { $0.script.contains("modules/system/") }
+
+        if needsSudo && !dryRun {
+            debugLog("🔐 System scripts detected, requesting sudo...")
+            requestSudoAndRun()
+        } else {
+            runNextItem()
+        }
+    }
+
+    func requestSudoAndRun() {
+        DispatchQueue.global(qos: .userInitiated).async {
+            // Use osascript to show native password dialog and validate sudo
+            let process = Process()
+            process.executableURL = URL(fileURLWithPath: "/usr/bin/osascript")
+            process.arguments = ["-e", "do shell script \"sudo -v\" with administrator privileges"]
+
+            do {
+                try process.run()
+                process.waitUntilExit()
+
+                DispatchQueue.main.async {
+                    if process.terminationStatus == 0 {
+                        debugLog("🔐 Sudo authenticated successfully")
+                        self.runNextItem()
+                    } else {
+                        debugLog("❌ Sudo authentication cancelled")
+                        self.isInstalling = false
+                    }
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    debugLog("❌ Failed to request sudo: \(error)")
+                    self.isInstalling = false
+                }
+            }
+        }
     }
 
     func runNextItem() {
