@@ -1,13 +1,13 @@
 #!/bin/bash
-# modules/system/screenshot.sh - Configurar formato de capturas de pantalla
+# modules/system/screenshot.sh - Configure screenshot format
 
 configure_screenshot() {
-    echo "  Configuring formato de capturas..."
+    echo "  Configuring screenshot options..."
 
-    # Formato PNG (más compatible)
+    # PNG format (most compatible)
     defaults write com.apple.screencapture type -string "png"
 
-    # Deshabilitar sombra en capturas de ventanas
+    # Disable shadow on window screenshots
     defaults write com.apple.screencapture disable-shadow -bool true
 
     # Sin thumbnail flotante

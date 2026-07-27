@@ -1,5 +1,5 @@
 #!/bin/bash
-# modules/system/dock.sh - Configuracion del Dock
+# modules/system/dock.sh - Dock configuration
 
 configure_dock() {
     echo "  Configuring Dock..."

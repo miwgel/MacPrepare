@@ -1,13 +1,13 @@
 #!/bin/bash
-# modules/system/network.sh - Configurar opciones de red
+# modules/system/network.sh - Configure network options
 
 configure_network() {
-    echo "  Configuring opciones de red..."
+    echo "  Configuring network options..."
 
-    # No crear .DS_Store en volúmenes de red
+    # Do not create .DS_Store on network volumes
     defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 
-    # No crear .DS_Store en USB
+    # Do not create .DS_Store on USB volumes
     defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
     # AirDrop sobre Ethernet

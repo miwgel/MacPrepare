@@ -11,7 +11,7 @@ install_docker() {
 
     brew install --cask docker || return 1
     echo "  Docker installed"
-    echo "  Abre Docker.app para completar la configuracion inicial"
+    echo "  Open Docker.app to complete the initial setup"
 
     return 0
 }

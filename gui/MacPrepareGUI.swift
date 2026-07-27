@@ -159,7 +159,7 @@ class AppState: ObservableObject {
             SubSection(name: "Keyboard", options: [
                 Option("Karabiner-Elements", "modules/keyboard/karabiner.sh", description: "Remap keys and create shortcuts", selected: false),
                 Option("Espanso", "modules/keyboard/espanso.sh", description: "Open source cross-platform text expander", selected: false),
-                Option("CheatSheet", "modules/keyboard/cheatsheet.sh", description: "See every app shortcut by holding ⌘", selected: false),
+                Option("KeyClu", "modules/keyboard/keyclu.sh", description: "See every app shortcut by holding ⌘", selected: false),
             ]),
             SubSection(name: "Mouse & Trackpad", options: [
                 Option("SaneSideButtons", "modules/utilities/sanesidebuttons.sh", description: "Make mouse side buttons work for back/forward"),

@@ -1,5 +1,5 @@
 #!/bin/bash
-# modules/system/security.sh - Configurar seguridad del sistema
+# modules/system/security.sh - Configure system security
 
 configure_security() {
     echo "  Configuring seguridad..."

@@ -1,5 +1,5 @@
 #!/bin/bash
-# modules/system/dialogs.sh - Configurar diálogos del sistema
+# modules/system/dialogs.sh - Configure system dialogs
 
 configure_dialogs() {
     echo "  Configuring dialogs..."

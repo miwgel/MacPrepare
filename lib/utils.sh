@@ -4,7 +4,7 @@
 # Archivo de log
 readonly LOG_FILE="$HOME/.macprepare-log.txt"
 
-# Inicializar log
+# Initialize log
 init_log() {
     echo "=== MacPrepare Log - $(date) ===" > "$LOG_FILE"
 }
@@ -28,7 +28,7 @@ log_success() {
     log "SUCCESS" "$1"
 }
 
-# Verificar si es macOS
+# Check whether we are on macOS
 check_macos() {
     if [[ "$(uname)" != "Darwin" ]]; then
         echo "Este script solo funciona en macOS"
@@ -36,35 +36,35 @@ check_macos() {
     fi
 }
 
-# Verificar si Homebrew esta instalado
+# Check whether Homebrew is installed
 check_homebrew() {
     command -v brew &> /dev/null
 }
 
-# Verificar si un comando existe
+# Check whether a command exists
 command_exists() {
     command -v "$1" &> /dev/null
 }
 
-# Verificar si una app esta instalada
+# Check whether an app is installed
 app_installed() {
     local app_name="$1"
     [ -d "/Applications/${app_name}.app" ] || [ -d "$HOME/Applications/${app_name}.app" ]
 }
 
-# Verificar si un cask esta instalado
+# Check whether a cask is installed
 cask_installed() {
     local cask_name="$1"
     brew list --cask "$cask_name" &> /dev/null
 }
 
-# Verificar si una formula esta instalada
+# Check whether a formula is installed
 formula_installed() {
     local formula_name="$1"
     brew list "$formula_name" &> /dev/null
 }
 
-# Ejecutar comando con logging
+# Run a command with logging
 run_cmd() {
     local cmd="$1"
     local dry_run="${2:-false}"
@@ -90,7 +90,7 @@ get_macos_version() {
     sw_vers -productVersion
 }
 
-# Verificar version minima de macOS
+# Check minimum macOS version
 check_macos_version() {
     local min_version="$1"
     local current_version=$(get_macos_version)
@@ -102,7 +102,7 @@ check_macos_version() {
     fi
 }
 
-# Mostrar errores del log al final
+# Show logged errors at the end
 show_errors_summary() {
     local errors=$(grep -c "\[ERROR\]" "$LOG_FILE" 2>/dev/null || echo "0")
     if [ "$errors" -gt 0 ]; then
@@ -115,7 +115,7 @@ show_errors_summary() {
     fi
 }
 
-# Limpiar archivos temporales
+# Clean up temporary files
 cleanup() {
     # Se llamara al finalizar si es necesario
     :

@@ -1,10 +1,10 @@
 #!/bin/bash
-# modules/system/finder.sh - Configuracion del Finder
+# modules/system/finder.sh - Finder configuration
 
 configure_finder() {
     echo "  Configuring Finder..."
 
-    # Mostrar extensiones de archivos
+    # Show file extensions
     defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 
     # Mostrar barra de ruta
@@ -19,10 +19,10 @@ configure_finder() {
     # Buscar en carpeta actual por defecto
     defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 
-    # No crear archivos .DS_Store en volumenes de red
+    # Do not create .DS_Store files on network volumes
     defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 
-    # No crear archivos .DS_Store en volumenes USB
+    # Do not create .DS_Store files on USB volumes
     defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
     # Mostrar carpeta home al abrir nueva ventana
