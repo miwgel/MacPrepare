@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/automation/hammerspoon.sh - Instalar Hammerspoon
+# modules/automation/hammerspoon.sh - Install Hammerspoon
 
 install_hammerspoon() {
-    echo "  Instalando Hammerspoon..."
+    echo "  Installing Hammerspoon..."
 
     if app_installed "Hammerspoon"; then
-        echo "  Hammerspoon ya esta instalado"
+        echo "  Hammerspoon is already installed"
         return 0
     fi
 
-    brew install --cask hammerspoon
-
-    echo "  Hammerspoon instalado"
+    brew install --cask hammerspoon || return 1
+    echo "  Hammerspoon installed"
 
     return 0
 }

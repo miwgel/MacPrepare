@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/browsers/orion.sh - Instalar Orion
+# modules/browsers/orion.sh - Install Orion
 
 install_orion() {
-    echo "  Instalando Orion..."
+    echo "  Installing Orion..."
 
     if app_installed "Orion"; then
-        echo "  Orion ya esta instalado"
+        echo "  Orion is already installed"
         return 0
     fi
 
-    brew install --cask orion
-
-    echo "  Orion instalado"
+    brew install --cask orion || return 1
+    echo "  Orion installed"
 
     return 0
 }

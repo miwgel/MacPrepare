@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/terminals/iterm.sh - Instalar iTerm2
+# modules/terminals/iterm.sh - Install iTerm2
 
 install_iterm() {
-    echo "  Instalando iTerm2..."
+    echo "  Installing iTerm2..."
 
     if app_installed "iTerm"; then
-        echo "  iTerm2 ya esta instalado"
+        echo "  iTerm2 is already installed"
         return 0
     fi
 
-    brew install --cask iterm2
-
-    echo "  iTerm2 instalado"
+    brew install --cask iterm2 || return 1
+    echo "  iTerm2 installed"
 
     return 0
 }

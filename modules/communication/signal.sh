@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/communication/signal.sh - Instalar Signal
+# modules/communication/signal.sh - Install Signal
 
 install_signal() {
-    echo "  Instalando Signal..."
+    echo "  Installing Signal..."
 
     if app_installed "Signal"; then
-        echo "  Signal ya esta instalado"
+        echo "  Signal is already installed"
         return 0
     fi
 
-    brew install --cask signal
-
-    echo "  Signal instalado"
+    brew install --cask signal || return 1
+    echo "  Signal installed"
 
     return 0
 }

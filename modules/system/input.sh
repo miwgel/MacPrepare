@@ -2,7 +2,7 @@
 # modules/system/input.sh - Desactivar autocorrección y funciones automáticas
 
 configure_input() {
-    echo "  Configurando entrada de texto..."
+    echo "  Configuring entrada de texto..."
 
     # Desactivar autocorrección
     defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
@@ -16,10 +16,10 @@ configure_input() {
     # Desactivar capitalización automática
     defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
 
-    echo "  Autocorrección: desactivada"
-    echo "  Smart dashes: desactivados"
-    echo "  Smart quotes: desactivados"
-    echo "  Capitalización automática: desactivada"
+    echo "  Autocorrection: disabled"
+    echo "  Smart dashes: disabled"
+    echo "  Smart quotes: disabled"
+    echo "  Auto-capitalization: disabled"
 
     return 0
 }

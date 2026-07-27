@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/terminals/ghostty.sh - Instalar Ghostty
+# modules/terminals/ghostty.sh - Install Ghostty
 
 install_ghostty() {
-    echo "  Instalando Ghostty..."
+    echo "  Installing Ghostty..."
 
     if app_installed "Ghostty"; then
-        echo "  Ghostty ya esta instalado"
+        echo "  Ghostty is already installed"
         return 0
     fi
 
-    brew install --cask ghostty
-
-    echo "  Ghostty instalado"
+    brew install --cask ghostty || return 1
+    echo "  Ghostty installed"
 
     return 0
 }

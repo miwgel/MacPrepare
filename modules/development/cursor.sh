@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/development/cursor.sh - Instalar Cursor
+# modules/development/cursor.sh - Install Cursor
 
 install_cursor() {
-    echo "  Instalando Cursor..."
+    echo "  Installing Cursor..."
 
     if app_installed "Cursor"; then
-        echo "  Cursor ya esta instalado"
+        echo "  Cursor is already installed"
         return 0
     fi
 
-    brew install --cask cursor
-
-    echo "  Cursor instalado"
+    brew install --cask cursor || return 1
+    echo "  Cursor installed"
 
     return 0
 }

@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/multimedia/iina.sh - Instalar IINA
+# modules/multimedia/iina.sh - Install IINA
 
 install_iina() {
-    echo "  Instalando IINA..."
+    echo "  Installing IINA..."
 
     if app_installed "IINA"; then
-        echo "  IINA ya esta instalado"
+        echo "  IINA is already installed"
         return 0
     fi
 
-    brew install --cask iina
-
-    echo "  IINA instalado"
+    brew install --cask iina || return 1
+    echo "  IINA installed"
 
     return 0
 }

@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/communication/slack.sh - Instalar Slack
+# modules/communication/slack.sh - Install Slack
 
 install_slack() {
-    echo "  Instalando Slack..."
+    echo "  Installing Slack..."
 
     if app_installed "Slack"; then
-        echo "  Slack ya esta instalado"
+        echo "  Slack is already installed"
         return 0
     fi
 
-    brew install --cask slack
-
-    echo "  Slack instalado"
+    brew install --cask slack || return 1
+    echo "  Slack installed"
 
     return 0
 }

@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/utilities/yt-dlp.sh - Instalar yt-dlp
+# modules/utilities/yt-dlp.sh - Install yt-dlp
 
 install_ytdlp() {
-    echo "  Instalando yt-dlp..."
+    echo "  Installing yt-dlp..."
 
     if command -v yt-dlp &> /dev/null; then
-        echo "  yt-dlp ya esta instalado"
+        echo "  yt-dlp is already installed"
         return 0
     fi
 
-    brew install yt-dlp
-
-    echo "  yt-dlp instalado"
+    brew install yt-dlp || return 1
+    echo "  yt-dlp installed"
 
     return 0
 }

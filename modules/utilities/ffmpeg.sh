@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/utilities/ffmpeg.sh - Instalar FFMPEG
+# modules/utilities/ffmpeg.sh - Install FFMPEG
 
 install_ffmpeg() {
-    echo "  Instalando FFMPEG..."
+    echo "  Installing FFMPEG..."
 
     if command_exists ffmpeg; then
-        echo "  FFMPEG ya esta instalado: $(ffmpeg -version 2>&1 | head -1)"
+        echo "  FFMPEG is already installed: $(ffmpeg -version 2>&1 | head -1)"
         return 0
     fi
 
-    brew install ffmpeg
-
-    echo "  FFMPEG instalado: $(ffmpeg -version 2>&1 | head -1)"
+    brew install ffmpeg || return 1
+    echo "  FFmpeg installed: $(ffmpeg -version 2>&1 | head -1)"
 
     return 0
 }

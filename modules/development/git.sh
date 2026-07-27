@@ -1,27 +1,25 @@
 #!/bin/bash
-# modules/development/git.sh - Instalar/actualizar Git y GitHub Desktop
+# modules/development/git.sh - Install/update Git y GitHub Desktop
 
 install_git() {
     local variant="${1:-git}"
 
     if [ "$variant" = "desktop" ]; then
-        echo "  Instalando GitHub Desktop..."
+        echo "  Installing GitHub Desktop..."
 
         if app_installed "GitHub Desktop"; then
-            echo "  GitHub Desktop ya esta instalado"
+            echo "  GitHub Desktop is already installed"
             return 0
         fi
 
-        brew install --cask github
-
-        echo "  GitHub Desktop instalado"
+        brew install --cask github || return 1
+        echo "  GitHub Desktop installed"
     else
-        echo "  Actualizando Git..."
+        echo "  Updating Git..."
 
-        # Instalar/actualizar git via Homebrew (mas reciente que el de macOS)
-        brew install git
-
-        echo "  Git actualizado a: $(git --version)"
+        # Install/actualizar git via Homebrew (mas reciente que el de macOS)
+        brew install git || return 1
+        echo "  Git updated to: $(git --version)"
     fi
 
     return 0

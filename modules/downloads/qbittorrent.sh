@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/downloads/qbittorrent.sh - Instalar qBittorrent
+# modules/downloads/qbittorrent.sh - Install qBittorrent
 
 install_qbittorrent() {
-    echo "  Instalando qBittorrent..."
+    echo "  Installing qBittorrent..."
 
     if app_installed "qBittorrent"; then
-        echo "  qBittorrent ya esta instalado"
+        echo "  qBittorrent is already installed"
         return 0
     fi
 
-    brew install --cask qbittorrent
-
-    echo "  qBittorrent instalado"
+    brew install --cask qbittorrent || return 1
+    echo "  qBittorrent installed"
 
     return 0
 }

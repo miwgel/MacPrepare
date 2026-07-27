@@ -1,5 +1,5 @@
 #!/bin/zsh
-# setup.sh - MacPrepare con GUI nativa SwiftUI
+# setup.sh - MacPrepare with native SwiftUI GUI
 
 set -e
 
@@ -14,39 +14,39 @@ CYAN='\033[0;36m'
 BOLD='\033[1m'
 RESET='\033[0m'
 
-# Verificar macOS
+# Check macOS
 check_macos
 
 # Paths
 GUI_SOURCE="$SCRIPT_DIR/gui/MacPrepareGUI.swift"
 GUI_BINARY="$SCRIPT_DIR/.build/MacPrepareGUI"
 
-# Verificar que existe el código fuente
+# Check that the GUI source exists
 if [[ ! -f "$GUI_SOURCE" ]]; then
-    echo -e "${RED}Error: No se encontró el código fuente de la GUI${RESET}"
+    echo -e "${RED}Error: GUI source code not found${RESET}"
     exit 1
 fi
 
-# Compilar GUI si es necesario
+# Compile GUI if needed
 compile_gui() {
     mkdir -p "$SCRIPT_DIR/.build"
 
-    # Solo recompilar si el fuente es más nuevo que el binario
+    # Only recompile if the source is newer than the binary
     if [[ ! -f "$GUI_BINARY" ]] || [[ "$GUI_SOURCE" -nt "$GUI_BINARY" ]]; then
-        echo -e "${CYAN}Compilando interfaz gráfica...${RESET}"
+        echo -e "${CYAN}Compiling graphical interface...${RESET}"
 
         if ! swiftc -o "$GUI_BINARY" "$GUI_SOURCE" \
             -framework SwiftUI \
             -framework AppKit \
             -parse-as-library \
             2>/dev/null; then
-            echo -e "${RED}Error: No se pudo compilar la GUI${RESET}"
-            echo -e "${YELLOW}Asegúrate de tener las Xcode Command Line Tools instaladas:${RESET}"
+            echo -e "${RED}Error: Could not compile the GUI${RESET}"
+            echo -e "${YELLOW}Make sure Xcode Command Line Tools are installed:${RESET}"
             echo "  xcode-select --install"
             exit 1
         fi
 
-        echo -e "${GREEN}✓${RESET} Compilación completada"
+        echo -e "${GREEN}✓${RESET} Compilation complete"
     fi
 }
 
@@ -57,12 +57,12 @@ main() {
 
     compile_gui
 
-    # Ejecutar GUI con el directorio del script como variable de entorno
-    # Pasar DEBUG si está definido
+    # Run GUI with the script directory as an environment variable
+    # Pass DEBUG through if defined
     MACPREPARE_DIR="$SCRIPT_DIR" DEBUG="$DEBUG" "$GUI_BINARY"
 
     echo ""
-    echo -e "${GREEN}✓${RESET} MacPrepare finalizado"
+    echo -e "${GREEN}✓${RESET} MacPrepare finished"
 }
 
 main "$@"

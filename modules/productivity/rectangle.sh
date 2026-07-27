@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/productivity/rectangle.sh - Instalar Rectangle
+# modules/productivity/rectangle.sh - Install Rectangle
 
 install_rectangle() {
-    echo "  Instalando Rectangle..."
+    echo "  Installing Rectangle..."
 
     if app_installed "Rectangle"; then
-        echo "  Rectangle ya esta instalado"
+        echo "  Rectangle is already installed"
         return 0
     fi
 
-    brew install --cask rectangle
-
-    echo "  Rectangle instalado"
+    brew install --cask rectangle || return 1
+    echo "  Rectangle installed"
 
     return 0
 }

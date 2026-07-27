@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/security/lulu.sh - Instalar LuLu
+# modules/security/lulu.sh - Install LuLu
 
 install_lulu() {
-    echo "  Instalando LuLu..."
+    echo "  Installing LuLu..."
 
     if app_installed "LuLu"; then
-        echo "  LuLu ya esta instalado"
+        echo "  LuLu is already installed"
         return 0
     fi
 
-    brew install --cask lulu
-
-    echo "  LuLu instalado"
+    brew install --cask lulu || return 1
+    echo "  LuLu installed"
 
     return 0
 }

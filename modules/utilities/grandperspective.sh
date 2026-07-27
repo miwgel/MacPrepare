@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/utilities/grandperspective.sh - Instalar GrandPerspective
+# modules/utilities/grandperspective.sh - Install GrandPerspective
 
 install_grandperspective() {
-    echo "  Instalando GrandPerspective..."
+    echo "  Installing GrandPerspective..."
 
     if app_installed "GrandPerspective"; then
-        echo "  GrandPerspective ya esta instalado"
+        echo "  GrandPerspective is already installed"
         return 0
     fi
 
-    brew install --cask grandperspective
-
-    echo "  GrandPerspective instalado"
+    brew install --cask grandperspective || return 1
+    echo "  GrandPerspective installed"
 
     return 0
 }

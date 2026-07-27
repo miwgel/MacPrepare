@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/terminals/warp.sh - Instalar Warp
+# modules/terminals/warp.sh - Install Warp
 
 install_warp() {
-    echo "  Instalando Warp..."
+    echo "  Installing Warp..."
 
     if app_installed "Warp"; then
-        echo "  Warp ya esta instalado"
+        echo "  Warp is already installed"
         return 0
     fi
 
-    brew install --cask warp
-
-    echo "  Warp instalado"
+    brew install --cask warp || return 1
+    echo "  Warp installed"
 
     return 0
 }

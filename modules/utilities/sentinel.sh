@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/utilities/sentinel.sh - Instalar Sentinel
+# modules/utilities/sentinel.sh - Install Sentinel
 
 install_sentinel() {
-    echo "  Instalando Sentinel..."
+    echo "  Installing Sentinel..."
 
     if app_installed "Sentinel"; then
-        echo "  Sentinel ya esta instalado"
+        echo "  Sentinel is already installed"
         return 0
     fi
 
-    brew install --cask sentinel
-
-    echo "  Sentinel instalado"
+    brew install --cask alienator88-sentinel || return 1
+    echo "  Sentinel installed"
 
     return 0
 }

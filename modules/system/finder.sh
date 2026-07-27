@@ -2,7 +2,7 @@
 # modules/system/finder.sh - Configuracion del Finder
 
 configure_finder() {
-    echo "  Configurando Finder..."
+    echo "  Configuring Finder..."
 
     # Mostrar extensiones de archivos
     defaults write NSGlobalDomain AppleShowAllExtensions -bool true

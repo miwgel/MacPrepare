@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/menubar/ice.sh - Instalar Ice
+# modules/menubar/ice.sh - Install Ice
 
 install_ice() {
-    echo "  Instalando Ice..."
+    echo "  Installing Ice..."
 
     if app_installed "Ice"; then
-        echo "  Ice ya esta instalado"
+        echo "  Ice is already installed"
         return 0
     fi
 
-    brew install --cask ice
-
-    echo "  Ice instalado"
+    brew install --cask jordanbaird-ice || return 1
+    echo "  Ice installed"
 
     return 0
 }

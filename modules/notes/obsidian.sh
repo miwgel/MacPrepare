@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/notes/obsidian.sh - Instalar Obsidian
+# modules/notes/obsidian.sh - Install Obsidian
 
 install_obsidian() {
-    echo "  Instalando Obsidian..."
+    echo "  Installing Obsidian..."
 
     if app_installed "Obsidian"; then
-        echo "  Obsidian ya esta instalado"
+        echo "  Obsidian is already installed"
         return 0
     fi
 
-    brew install --cask obsidian
-
-    echo "  Obsidian instalado"
+    brew install --cask obsidian || return 1
+    echo "  Obsidian installed"
 
     return 0
 }

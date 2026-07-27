@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/communication/discord.sh - Instalar Discord
+# modules/communication/discord.sh - Install Discord
 
 install_discord() {
-    echo "  Instalando Discord..."
+    echo "  Installing Discord..."
 
     if app_installed "Discord"; then
-        echo "  Discord ya esta instalado"
+        echo "  Discord is already installed"
         return 0
     fi
 
-    brew install --cask discord
-
-    echo "  Discord instalado"
+    brew install --cask discord || return 1
+    echo "  Discord installed"
 
     return 0
 }

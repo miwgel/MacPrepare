@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/backup/dropbox.sh - Instalar Dropbox
+# modules/backup/dropbox.sh - Install Dropbox
 
 install_dropbox() {
-    echo "  Instalando Dropbox..."
+    echo "  Installing Dropbox..."
 
     if app_installed "Dropbox"; then
-        echo "  Dropbox ya esta instalado"
+        echo "  Dropbox is already installed"
         return 0
     fi
 
-    brew install --cask dropbox
-
-    echo "  Dropbox instalado"
+    brew install --cask dropbox || return 1
+    echo "  Dropbox installed"
 
     return 0
 }

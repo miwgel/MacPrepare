@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/backup/backblaze.sh - Instalar Backblaze
+# modules/backup/backblaze.sh - Install Backblaze
 
 install_backblaze() {
-    echo "  Instalando Backblaze..."
+    echo "  Installing Backblaze..."
 
     if app_installed "Backblaze"; then
-        echo "  Backblaze ya esta instalado"
+        echo "  Backblaze is already installed"
         return 0
     fi
 
-    brew install --cask backblaze
-
-    echo "  Backblaze instalado"
+    brew install --cask backblaze || return 1
+    echo "  Backblaze installed"
 
     return 0
 }

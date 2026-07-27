@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/terminals/alacritty.sh - Instalar Alacritty
+# modules/terminals/alacritty.sh - Install Alacritty
 
 install_alacritty() {
-    echo "  Instalando Alacritty..."
+    echo "  Installing Alacritty..."
 
     if app_installed "Alacritty"; then
-        echo "  Alacritty ya esta instalado"
+        echo "  Alacritty is already installed"
         return 0
     fi
 
-    brew install --cask alacritty
-
-    echo "  Alacritty instalado"
+    brew install --cask alacritty || return 1
+    echo "  Alacritty installed"
 
     return 0
 }

@@ -2,7 +2,7 @@
 # modules/system/dialogs.sh - Configurar diálogos del sistema
 
 configure_dialogs() {
-    echo "  Configurando diálogos..."
+    echo "  Configuring dialogs..."
 
     # Expandir diálogo de guardar por defecto
     defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
@@ -15,9 +15,9 @@ configure_dialogs() {
     # Guardar en disco local por defecto (no iCloud)
     defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
 
-    echo "  Diálogo de guardar: expandido por defecto"
-    echo "  Diálogo de imprimir: expandido por defecto"
-    echo "  Guardar por defecto: disco local (no iCloud)"
+    echo "  Save dialog: expanded by default"
+    echo "  Print dialog: expanded by default"
+    echo "  Default save target: local disk (not iCloud)"
 
     return 0
 }

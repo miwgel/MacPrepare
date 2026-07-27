@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/gaming/epic-games.sh - Instalar Epic Games Launcher
+# modules/gaming/epic-games.sh - Install Epic Games Launcher
 
 install_epic_games() {
-    echo "  Instalando Epic Games Launcher..."
+    echo "  Installing Epic Games Launcher..."
 
     if app_installed "Epic Games Launcher"; then
-        echo "  Epic Games Launcher ya esta instalado"
+        echo "  Epic Games Launcher is already installed"
         return 0
     fi
 
-    brew install --cask epic-games
-
-    echo "  Epic Games Launcher instalado"
+    brew install --cask epic-games || return 1
+    echo "  Epic Games Launcher installed"
 
     return 0
 }

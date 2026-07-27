@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/gaming/steam.sh - Instalar Steam
+# modules/gaming/steam.sh - Install Steam
 
 install_steam() {
-    echo "  Instalando Steam..."
+    echo "  Installing Steam..."
 
     if app_installed "Steam"; then
-        echo "  Steam ya esta instalado"
+        echo "  Steam is already installed"
         return 0
     fi
 
-    brew install --cask steam
-
-    echo "  Steam instalado"
+    brew install --cask steam || return 1
+    echo "  Steam installed"
 
     return 0
 }

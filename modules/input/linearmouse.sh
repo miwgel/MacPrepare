@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/input/linearmouse.sh - Instalar LinearMouse
+# modules/input/linearmouse.sh - Install LinearMouse
 
 install_linearmouse() {
-    echo "  Instalando LinearMouse..."
+    echo "  Installing LinearMouse..."
 
     if app_installed "LinearMouse"; then
-        echo "  LinearMouse ya esta instalado"
+        echo "  LinearMouse is already installed"
         return 0
     fi
 
-    brew install --cask linearmouse
-
-    echo "  LinearMouse instalado"
+    brew install --cask linearmouse || return 1
+    echo "  LinearMouse installed"
 
     return 0
 }

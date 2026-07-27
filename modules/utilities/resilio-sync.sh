@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/utilities/resilio-sync.sh - Instalar Resilio Sync
+# modules/utilities/resilio-sync.sh - Install Resilio Sync
 
 install_resilio() {
-    echo "  Instalando Resilio Sync..."
+    echo "  Installing Resilio Sync..."
 
     if app_installed "Resilio Sync"; then
-        echo "  Resilio Sync ya esta instalado"
+        echo "  Resilio Sync is already installed"
         return 0
     fi
 
-    brew install --cask resilio-sync
-
-    echo "  Resilio Sync instalado"
+    brew install --cask resilio-sync || return 1
+    echo "  Resilio Sync installed"
 
     return 0
 }

@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/keyboard/cheatsheet.sh - Instalar CheatSheet
+# modules/keyboard/cheatsheet.sh - Install CheatSheet
 
 install_cheatsheet() {
-    echo "  Instalando CheatSheet..."
+    echo "  Installing CheatSheet..."
 
     if app_installed "CheatSheet"; then
-        echo "  CheatSheet ya esta instalado"
+        echo "  CheatSheet is already installed"
         return 0
     fi
 
-    brew install --cask cheatsheet
-
-    echo "  CheatSheet instalado"
+    brew install --cask cheatsheet || return 1
+    echo "  CheatSheet installed"
 
     return 0
 }

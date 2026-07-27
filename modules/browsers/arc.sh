@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/browsers/arc.sh - Instalar Arc
+# modules/browsers/arc.sh - Install Arc
 
 install_arc() {
-    echo "  Instalando Arc..."
+    echo "  Installing Arc..."
 
     if app_installed "Arc"; then
-        echo "  Arc ya esta instalado"
+        echo "  Arc is already installed"
         return 0
     fi
 
-    brew install --cask arc
-
-    echo "  Arc instalado"
+    brew install --cask arc || return 1
+    echo "  Arc installed"
 
     return 0
 }

@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/vms/parallels.sh - Instalar Parallels
+# modules/vms/parallels.sh - Install Parallels
 
 install_parallels() {
-    echo "  Instalando Parallels..."
+    echo "  Installing Parallels..."
 
     if app_installed "Parallels Desktop"; then
-        echo "  Parallels ya esta instalado"
+        echo "  Parallels is already installed"
         return 0
     fi
 
-    brew install --cask parallels
-
-    echo "  Parallels instalado"
+    brew install --cask parallels || return 1
+    echo "  Parallels installed"
 
     return 0
 }

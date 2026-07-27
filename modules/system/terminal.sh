@@ -1,31 +1,29 @@
 #!/bin/bash
-# modules/system/terminal.sh - Habilitar TouchID para sudo
+# modules/system/terminal.sh - Enable Touch ID for sudo
 
 configure_touchid_sudo() {
-    echo "  Configurando TouchID para sudo..."
+    echo "  Configuring Touch ID for sudo..."
 
     local pam_file="/etc/pam.d/sudo_local"
     local pam_line="auth       sufficient     pam_tid.so"
 
-    # Verificar si ya esta configurado
+    # Check if already configured
     if [ -f "$pam_file" ] && grep -q "pam_tid.so" "$pam_file"; then
-        echo "  TouchID para sudo ya esta configurado"
+        echo "  Touch ID for sudo is already configured"
         return 0
     fi
 
-    # Crear archivo sudo_local si no existe (metodo recomendado en macOS Sonoma+)
+    # Create sudo_local if missing (recommended method on macOS Sonoma+)
     if [ ! -f "$pam_file" ]; then
-        echo "  Creando configuracion de TouchID para sudo..."
-        echo "# sudo_local: archivo local de configuracion para sudo" | sudo tee "$pam_file" > /dev/null
-        echo "# Habilitar TouchID para autenticacion sudo" | sudo tee -a "$pam_file" > /dev/null
-        echo "$pam_line" | sudo tee -a "$pam_file" > /dev/null
+        echo "  Creating Touch ID sudo configuration..."
+        printf '%s\n' "# sudo_local: local sudo configuration file" "# Enable Touch ID for sudo authentication" "$pam_line" | tee "$pam_file" > /dev/null || return 1
     else
-        # Agregar linea si el archivo existe pero no tiene la configuracion
-        echo "$pam_line" | sudo tee -a "$pam_file" > /dev/null
+        # Append the line if the file exists but lacks the configuration
+        echo "$pam_line" | tee -a "$pam_file" > /dev/null || return 1
     fi
 
-    echo "  TouchID habilitado para sudo"
-    echo "  Nota: Funciona con TouchID fisico y Apple Watch"
+    echo "  Touch ID enabled for sudo"
+    echo "  Note: Works with physical Touch ID and Apple Watch"
 
     return 0
 }

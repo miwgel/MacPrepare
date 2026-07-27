@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/notes/notion.sh - Instalar Notion
+# modules/notes/notion.sh - Install Notion
 
 install_notion() {
-    echo "  Instalando Notion..."
+    echo "  Installing Notion..."
 
     if app_installed "Notion"; then
-        echo "  Notion ya esta instalado"
+        echo "  Notion is already installed"
         return 0
     fi
 
-    brew install --cask notion
-
-    echo "  Notion instalado"
+    brew install --cask notion || return 1
+    echo "  Notion installed"
 
     return 0
 }

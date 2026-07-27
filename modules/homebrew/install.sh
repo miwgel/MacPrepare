@@ -1,17 +1,17 @@
 #!/bin/bash
-# modules/homebrew/install.sh - Instalar Homebrew y deshabilitar telemetria
+# modules/homebrew/install.sh - Install Homebrew and disable telemetry
 
 install_homebrew() {
-    echo "  Verificando Homebrew..."
+    echo "  Checking Homebrew..."
 
-    # Verificar si ya esta instalado
+    # Check if already installed
     if command -v brew &> /dev/null; then
-        echo "  Homebrew ya esta instalado"
+        echo "  Homebrew is already installed"
     else
-        echo "  Instalando Homebrew..."
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        echo "  Installing Homebrew..."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || return 1
 
-        # Agregar Homebrew al PATH segun arquitectura
+        # Add Homebrew to PATH depending on architecture
         if [[ $(uname -m) == "arm64" ]]; then
             echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> "$HOME/.zprofile"
             eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -21,14 +21,14 @@ install_homebrew() {
         fi
     fi
 
-    # Deshabilitar telemetria/analytics
-    echo "  Deshabilitando telemetria de Homebrew..."
+    # Disable telemetry/analytics
+    echo "  Disabling Homebrew telemetry..."
     brew analytics off
 
-    # Agregar variable de entorno para deshabilitar analytics permanentemente
+    # Environment variable to permanently disable analytics
     if ! grep -q "HOMEBREW_NO_ANALYTICS" "$HOME/.zshrc" 2>/dev/null; then
         echo "" >> "$HOME/.zshrc"
-        echo "# Deshabilitar telemetria de Homebrew" >> "$HOME/.zshrc"
+        echo "# Disable Homebrew telemetry" >> "$HOME/.zshrc"
         echo "export HOMEBREW_NO_ANALYTICS=1" >> "$HOME/.zshrc"
     fi
 
@@ -37,7 +37,7 @@ install_homebrew() {
         echo "export HOMEBREW_NO_ANALYTICS=1" >> "$HOME/.zprofile"
     fi
 
-    echo "  Homebrew instalado y telemetria deshabilitada"
+    echo "  Homebrew installed and telemetry disabled"
 
     return 0
 }

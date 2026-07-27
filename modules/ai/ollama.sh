@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/ai/ollama.sh - Instalar Ollama
+# modules/ai/ollama.sh - Install Ollama
 
 install_ollama() {
-    echo "  Instalando Ollama..."
+    echo "  Installing Ollama..."
 
     if command -v ollama &> /dev/null; then
-        echo "  Ollama ya esta instalado"
+        echo "  Ollama is already installed"
         return 0
     fi
 
-    brew install ollama
-
-    echo "  Ollama instalado"
+    brew install ollama || return 1
+    echo "  Ollama installed"
 
     return 0
 }

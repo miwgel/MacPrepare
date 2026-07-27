@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/browsers/chrome.sh - Instalar Google Chrome
+# modules/browsers/chrome.sh - Install Google Chrome
 
 install_chrome() {
-    echo "  Instalando Google Chrome..."
+    echo "  Installing Google Chrome..."
 
     if app_installed "Google Chrome"; then
-        echo "  Google Chrome ya esta instalado"
+        echo "  Google Chrome is already installed"
         return 0
     fi
 
-    brew install --cask google-chrome
-
-    echo "  Google Chrome instalado"
+    brew install --cask google-chrome || return 1
+    echo "  Google Chrome installed"
 
     return 0
 }

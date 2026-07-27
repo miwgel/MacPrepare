@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/design/blender.sh - Instalar Blender
+# modules/design/blender.sh - Install Blender
 
 install_blender() {
-    echo "  Instalando Blender..."
+    echo "  Installing Blender..."
 
     if app_installed "Blender"; then
-        echo "  Blender ya esta instalado"
+        echo "  Blender is already installed"
         return 0
     fi
 
-    brew install --cask blender
-
-    echo "  Blender instalado"
+    brew install --cask blender || return 1
+    echo "  Blender installed"
 
     return 0
 }

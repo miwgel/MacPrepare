@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/backup/syncthing.sh - Instalar Syncthing
+# modules/backup/syncthing.sh - Install Syncthing
 
 install_syncthing() {
-    echo "  Instalando Syncthing..."
+    echo "  Installing Syncthing..."
 
     if app_installed "Syncthing"; then
-        echo "  Syncthing ya esta instalado"
+        echo "  Syncthing is already installed"
         return 0
     fi
 
-    brew install --cask syncthing
-
-    echo "  Syncthing instalado"
+    brew install --cask syncthing || return 1
+    echo "  Syncthing installed"
 
     return 0
 }

@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/utilities/appcleaner.sh - Instalar AppCleaner
+# modules/utilities/appcleaner.sh - Install AppCleaner
 
 install_appcleaner() {
-    echo "  Instalando AppCleaner..."
+    echo "  Installing AppCleaner..."
 
     if app_installed "AppCleaner"; then
-        echo "  AppCleaner ya esta instalado"
+        echo "  AppCleaner is already installed"
         return 0
     fi
 
-    brew install --cask appcleaner
-
-    echo "  AppCleaner instalado"
+    brew install --cask appcleaner || return 1
+    echo "  AppCleaner installed"
 
     return 0
 }

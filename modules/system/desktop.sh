@@ -2,7 +2,7 @@
 # modules/system/desktop.sh - Ocultar iconos del escritorio
 
 configure_desktop() {
-    echo "  Ocultando iconos del escritorio..."
+    echo "  Hiding desktop icons..."
 
     # Ocultar iconos del escritorio
     defaults write com.apple.finder CreateDesktop -bool false
@@ -10,8 +10,8 @@ configure_desktop() {
     # Reiniciar Finder para aplicar
     killall Finder 2>/dev/null || true
 
-    echo "  Iconos del escritorio ocultados"
-    echo "  Para revertir: defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
+    echo "  Desktop icons hidden"
+    echo "  To revert: defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
 
     return 0
 }

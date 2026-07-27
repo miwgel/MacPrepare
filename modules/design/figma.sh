@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/design/figma.sh - Instalar Figma
+# modules/design/figma.sh - Install Figma
 
 install_figma() {
-    echo "  Instalando Figma..."
+    echo "  Installing Figma..."
 
     if app_installed "Figma"; then
-        echo "  Figma ya esta instalado"
+        echo "  Figma is already installed"
         return 0
     fi
 
-    brew install --cask figma
-
-    echo "  Figma instalado"
+    brew install --cask figma || return 1
+    echo "  Figma installed"
 
     return 0
 }

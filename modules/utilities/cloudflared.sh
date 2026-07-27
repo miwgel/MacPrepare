@@ -1,18 +1,17 @@
 #!/bin/bash
-# modules/utilities/cloudflared.sh - Instalar Cloudflared
+# modules/utilities/cloudflared.sh - Install Cloudflared
 
 install_cloudflared() {
-    echo "  Instalando Cloudflared..."
+    echo "  Installing Cloudflared..."
 
     if command_exists cloudflared; then
-        echo "  Cloudflared ya esta instalado"
+        echo "  Cloudflared is already installed"
         return 0
     fi
 
-    brew install cloudflared
-
-    echo "  Cloudflared instalado"
-    echo "  Usa 'cloudflared tunnel login' para autenticarte"
+    brew install cloudflared || return 1
+    echo "  Cloudflared installed"
+    echo "  Use 'cloudflared tunnel login' to authenticate"
 
     return 0
 }

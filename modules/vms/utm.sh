@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/vms/utm.sh - Instalar UTM
+# modules/vms/utm.sh - Install UTM
 
 install_utm() {
-    echo "  Instalando UTM..."
+    echo "  Installing UTM..."
 
     if app_installed "UTM"; then
-        echo "  UTM ya esta instalado"
+        echo "  UTM is already installed"
         return 0
     fi
 
-    brew install --cask utm
-
-    echo "  UTM instalado"
+    brew install --cask utm || return 1
+    echo "  UTM installed"
 
     return 0
 }

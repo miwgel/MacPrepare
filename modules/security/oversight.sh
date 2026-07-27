@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/security/oversight.sh - Instalar Oversight
+# modules/security/oversight.sh - Install Oversight
 
 install_oversight() {
-    echo "  Instalando Oversight..."
+    echo "  Installing Oversight..."
 
     if app_installed "OverSight"; then
-        echo "  Oversight ya esta instalado"
+        echo "  Oversight is already installed"
         return 0
     fi
 
-    brew install --cask oversight
-
-    echo "  Oversight instalado"
+    brew install --cask oversight || return 1
+    echo "  Oversight installed"
 
     return 0
 }

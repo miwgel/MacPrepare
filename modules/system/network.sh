@@ -2,7 +2,7 @@
 # modules/system/network.sh - Configurar opciones de red
 
 configure_network() {
-    echo "  Configurando opciones de red..."
+    echo "  Configuring opciones de red..."
 
     # No crear .DS_Store en volúmenes de red
     defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
@@ -16,10 +16,10 @@ configure_network() {
     # No ofrecer discos nuevos para Time Machine
     defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
 
-    echo "  .DS_Store en red: desactivado"
-    echo "  .DS_Store en USB: desactivado"
-    echo "  AirDrop sobre Ethernet: activado"
-    echo "  Oferta Time Machine para discos nuevos: desactivada"
+    echo "  .DS_Store on network volumes: disabled"
+    echo "  .DS_Store on USB volumes: disabled"
+    echo "  AirDrop over Ethernet: enabled"
+    echo "  Time Machine prompt for new disks: disabled"
 
     return 0
 }

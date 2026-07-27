@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/input/mos.sh - Instalar Mos
+# modules/input/mos.sh - Install Mos
 
 install_mos() {
-    echo "  Instalando Mos..."
+    echo "  Installing Mos..."
 
     if app_installed "Mos"; then
-        echo "  Mos ya esta instalado"
+        echo "  Mos is already installed"
         return 0
     fi
 
-    brew install --cask mos
-
-    echo "  Mos instalado"
+    brew install --cask mos || return 1
+    echo "  Mos installed"
 
     return 0
 }

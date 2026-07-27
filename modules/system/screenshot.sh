@@ -2,7 +2,7 @@
 # modules/system/screenshot.sh - Configurar formato de capturas de pantalla
 
 configure_screenshot() {
-    echo "  Configurando formato de capturas..."
+    echo "  Configuring formato de capturas..."
 
     # Formato PNG (más compatible)
     defaults write com.apple.screencapture type -string "png"
@@ -17,10 +17,10 @@ configure_screenshot() {
     mkdir -p ~/Screenshots
     defaults write com.apple.screencapture location ~/Screenshots
 
-    echo "  Formato de capturas: PNG"
-    echo "  Sombra en capturas de ventana: desactivada"
-    echo "  Thumbnail flotante: desactivado"
-    echo "  Ubicación: ~/Screenshots"
+    echo "  Screenshot format: PNG"
+    echo "  Window screenshot shadow: disabled"
+    echo "  Floating thumbnail: disabled"
+    echo "  Location: ~/Screenshots"
 
     return 0
 }

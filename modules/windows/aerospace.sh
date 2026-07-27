@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/windows/aerospace.sh - Instalar AeroSpace
+# modules/windows/aerospace.sh - Install AeroSpace
 
 install_aerospace() {
-    echo "  Instalando AeroSpace..."
+    echo "  Installing AeroSpace..."
 
     if app_installed "AeroSpace"; then
-        echo "  AeroSpace ya esta instalado"
+        echo "  AeroSpace is already installed"
         return 0
     fi
 
-    brew install --cask aerospace
-
-    echo "  AeroSpace instalado"
+    brew install --cask nikitabobko/tap/aerospace || return 1
+    echo "  AeroSpace installed"
 
     return 0
 }

@@ -1,32 +1,24 @@
 #!/bin/bash
-# modules/system/spotlight-hotkey.sh - Desactivar hotkey de Spotlight (⌘Space)
-# Útil para usar Raycast u otro launcher con ⌘Space
+# modules/system/spotlight-hotkey.sh - Disable Spotlight hotkeys (⌘Space and ⌘⌥Space)
+# Useful to free up ⌘Space for Raycast or another launcher
+# Must run as the logged-in user (NOT root): uses per-user defaults via cfprefsd
 
 disable_spotlight_hotkey() {
-    echo "  Desactivando hotkey de Spotlight (⌘Space)..."
+    echo "  Disabling Spotlight hotkeys (⌘Space and ⌘⌥Space)..."
 
-    local plist="$HOME/Library/Preferences/com.apple.symbolichotkeys.plist"
+    local disabled_entry='<dict><key>enabled</key><false/><key>value</key><dict><key>type</key><string>standard</string><key>parameters</key><array><integer>65535</integer><integer>65535</integer><integer>0</integer></array></dict></dict>'
 
-    # Eliminar key 64 si existe (para recrearlo limpio)
-    /usr/libexec/PlistBuddy -c "Delete :AppleSymbolicHotKeys:64" "$plist" 2>/dev/null || true
+    # Key 64: Show Spotlight search (⌘Space)
+    defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 "$disabled_entry" || return 1
 
-    # Crear key 64 desactivado con parámetros "sin tecla"
-    /usr/libexec/PlistBuddy \
-        -c "Add :AppleSymbolicHotKeys:64 dict" \
-        -c "Add :AppleSymbolicHotKeys:64:enabled bool false" \
-        -c "Add :AppleSymbolicHotKeys:64:value dict" \
-        -c "Add :AppleSymbolicHotKeys:64:value:type string standard" \
-        -c "Add :AppleSymbolicHotKeys:64:value:parameters array" \
-        -c "Add :AppleSymbolicHotKeys:64:value:parameters:0 integer 65535" \
-        -c "Add :AppleSymbolicHotKeys:64:value:parameters:1 integer 65535" \
-        -c "Add :AppleSymbolicHotKeys:64:value:parameters:2 integer 0" \
-        "$plist"
+    # Key 65: Show Spotlight window (⌘⌥Space)
+    defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 65 "$disabled_entry" || return 1
 
-    # Aplicar cambios
+    # Apply changes
     /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 
-    echo "  Hotkey de Spotlight desactivado"
-    echo "  Nota: Puede requerir cerrar sesión para aplicar completamente"
+    echo "  Spotlight hotkeys disabled"
+    echo "  Note: You may need to log out for this to fully apply"
 
     return 0
 }

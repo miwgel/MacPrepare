@@ -1,18 +1,17 @@
 #!/bin/bash
-# modules/utilities/sanesidebuttons.sh - Instalar SaneSideButtons
+# modules/utilities/sanesidebuttons.sh - Install SaneSideButtons
 
 install_sanesidebuttons() {
-    echo "  Instalando SaneSideButtons..."
+    echo "  Installing SaneSideButtons..."
 
     if app_installed "SaneSideButtons"; then
-        echo "  SaneSideButtons ya esta instalado"
+        echo "  SaneSideButtons is already installed"
         return 0
     fi
 
-    brew install --cask sanesidebuttons
-
-    echo "  SaneSideButtons instalado"
-    echo "  Abre la app y dale permisos de accesibilidad"
+    brew install --cask sanesidebuttons || return 1
+    echo "  SaneSideButtons installed"
+    echo "  Open the app and grant it Accessibility permissions"
 
     return 0
 }

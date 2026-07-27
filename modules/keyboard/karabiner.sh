@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/keyboard/karabiner.sh - Instalar Karabiner-Elements
+# modules/keyboard/karabiner.sh - Install Karabiner-Elements
 
 install_karabiner() {
-    echo "  Instalando Karabiner-Elements..."
+    echo "  Installing Karabiner-Elements..."
 
     if app_installed "Karabiner-Elements"; then
-        echo "  Karabiner-Elements ya esta instalado"
+        echo "  Karabiner-Elements is already installed"
         return 0
     fi
 
-    brew install --cask karabiner-elements
-
-    echo "  Karabiner-Elements instalado"
+    brew install --cask karabiner-elements || return 1
+    echo "  Karabiner-Elements installed"
 
     return 0
 }

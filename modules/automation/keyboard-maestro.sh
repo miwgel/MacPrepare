@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/automation/keyboard-maestro.sh - Instalar Keyboard Maestro
+# modules/automation/keyboard-maestro.sh - Install Keyboard Maestro
 
 install_keyboard_maestro() {
-    echo "  Instalando Keyboard Maestro..."
+    echo "  Installing Keyboard Maestro..."
 
     if app_installed "Keyboard Maestro"; then
-        echo "  Keyboard Maestro ya esta instalado"
+        echo "  Keyboard Maestro is already installed"
         return 0
     fi
 
-    brew install --cask keyboard-maestro
-
-    echo "  Keyboard Maestro instalado"
+    brew install --cask keyboard-maestro || return 1
+    echo "  Keyboard Maestro installed"
 
     return 0
 }

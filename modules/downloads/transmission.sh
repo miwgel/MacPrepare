@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/downloads/transmission.sh - Instalar Transmission
+# modules/downloads/transmission.sh - Install Transmission
 
 install_transmission() {
-    echo "  Instalando Transmission..."
+    echo "  Installing Transmission..."
 
     if app_installed "Transmission"; then
-        echo "  Transmission ya esta instalado"
+        echo "  Transmission is already installed"
         return 0
     fi
 
-    brew install --cask transmission
-
-    echo "  Transmission instalado"
+    brew install --cask transmission || return 1
+    echo "  Transmission installed"
 
     return 0
 }

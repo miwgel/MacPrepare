@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/development/platypus.sh - Instalar Platypus
+# modules/development/platypus.sh - Install Platypus
 
 install_platypus() {
-    echo "  Instalando Platypus..."
+    echo "  Installing Platypus..."
 
     if app_installed "Platypus"; then
-        echo "  Platypus ya esta instalado"
+        echo "  Platypus is already installed"
         return 0
     fi
 
-    brew install --cask platypus
-
-    echo "  Platypus instalado"
+    brew install --cask platypus || return 1
+    echo "  Platypus installed"
 
     return 0
 }

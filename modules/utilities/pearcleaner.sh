@@ -1,17 +1,16 @@
 #!/bin/bash
-# modules/utilities/pearcleaner.sh - Instalar PearCleaner
+# modules/utilities/pearcleaner.sh - Install PearCleaner
 
 install_pearcleaner() {
-    echo "  Instalando PearCleaner..."
+    echo "  Installing PearCleaner..."
 
     if app_installed "PearCleaner"; then
-        echo "  PearCleaner ya esta instalado"
+        echo "  PearCleaner is already installed"
         return 0
     fi
 
-    brew install --cask pearcleaner
-
-    echo "  PearCleaner instalado"
+    brew install --cask pearcleaner || return 1
+    echo "  PearCleaner installed"
 
     return 0
 }

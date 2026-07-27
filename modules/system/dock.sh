@@ -2,7 +2,7 @@
 # modules/system/dock.sh - Configuracion del Dock
 
 configure_dock() {
-    echo "  Configurando Dock..."
+    echo "  Configuring Dock..."
 
     # Tamano del dock: 36px
     defaults write com.apple.dock tilesize -int 36

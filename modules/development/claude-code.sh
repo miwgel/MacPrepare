@@ -1,18 +1,21 @@
 #!/bin/bash
-# modules/development/claude-code.sh - Instalar Claude Code
+# modules/development/claude-code.sh - Install Claude Code
 
 install_claude_code() {
-    echo "  Instalando Claude Code..."
+    echo "  Installing Claude Code..."
 
     if command -v claude &> /dev/null; then
-        echo "  Claude Code ya esta instalado"
+        echo "  Claude Code is already installed"
         return 0
     fi
 
-    # Claude Code se instala via curl, no brew
-    curl -fsSL https://claude.ai/install.sh | bash
+    # Claude Code installs via curl, not brew
+    if ! curl -fsSL https://claude.ai/install.sh | bash; then
+        echo "  Error: Claude Code installer failed"
+        return 1
+    fi
 
-    echo "  Claude Code instalado"
+    echo "  Claude Code installed"
 
     return 0
 }
